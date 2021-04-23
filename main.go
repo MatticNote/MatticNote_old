@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/MatticNote/MatticNote/config"
 	"github.com/MatticNote/MatticNote/db"
@@ -101,6 +102,11 @@ func startServer(c *cli.Context) error {
 		addrPort = cfg.Server.Port
 	}
 
+	if err := db.InitDB(cfg); err != nil {
+		return err
+	}
+	defer db.CloseDB()
+
 	mnServer := atreugo.New(atreugo.Config{
 		Name:                 "MatticNote",
 		Addr:                 fmt.Sprintf("%s:%d", addr, addrPort),
@@ -110,6 +116,7 @@ func startServer(c *cli.Context) error {
 		PanicView:            view.PanicView,
 	})
 	server.ConfigureRoute(mnServer)
+
 	return mnServer.ListenAndServe()
 }
 
@@ -124,7 +131,11 @@ func migrateAction(_ *cli.Context) error {
 		return err
 	}
 
-	return processMigration(cfg)
+	err = processMigration(cfg)
+	if err == nil {
+		log.Println("Migration process was successfully.")
+	}
+	return err
 }
 
 func processMigration(cfg *config.MatticNoteConfig) error {
@@ -161,10 +172,20 @@ func processMigration(cfg *config.MatticNoteConfig) error {
 		return err
 	}
 
-	err = dbMigrate.Up()
-	if err != nil {
-		return err
+	ver, dirty, _ := dbMigrate.Version()
+	log.Println(fmt.Sprintf("Version: %d", ver))
+
+	if !dirty {
+		err = dbMigrate.Up()
+		if err != nil {
+			return err
+		}
+	} else {
+		return errors.New("dirty error detected, abort migration")
 	}
+
+	ver, _, _ = dbMigrate.Version()
+	log.Println(fmt.Sprintf("Updated to version: %d", ver))
 
 	err, err2 := dbMigrate.Close()
 	if err != nil {

@@ -10,12 +10,13 @@ import (
 var Config *MatticNoteConfig
 
 type MNCDbConfig struct {
-	Address  string
-	Port     uint
-	User     string
-	Password string
-	Name     string
-	Sslmode  string
+	Address    string
+	Port       uint
+	User       string
+	Password   string
+	Name       string
+	Sslmode    string
+	MaxConnect int
 }
 
 type MNCSrvConfig struct {

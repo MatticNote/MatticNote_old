@@ -1,6 +1,9 @@
 package view
 
-import "github.com/savsgio/atreugo/v11"
+import (
+	"github.com/savsgio/atreugo/v11"
+	"log"
+)
 
 func NotFoundErrorView(ctx *atreugo.RequestCtx) error {
 	ctx.SetStatusCode(404)
@@ -16,6 +19,8 @@ func ErrorView(ctx *atreugo.RequestCtx, _ error, _ int) {
 	ctx.SetStatusCode(500)
 }
 
-func PanicView(ctx *atreugo.RequestCtx, _ interface{}) {
+func PanicView(ctx *atreugo.RequestCtx, errTrace interface{}) {
+	log.Println("It has occurred panic error: ")
+	log.Println(errTrace)
 	_ = ctx.TextResponse("FATAL INTERNAL SERVER ERROR", 500)
 }

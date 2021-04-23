@@ -1,6 +1,7 @@
 package server
 
 import (
+	apiV1 "github.com/MatticNote/MatticNote/server/api/v1"
 	"github.com/atreugo/cors"
 	"github.com/savsgio/atreugo/v11"
 )
@@ -10,9 +11,8 @@ func ConfigureRoute(app *atreugo.Atreugo) {
 		// WIP
 		return ctx.TextResponse("GET")
 	})
-	apiPath := app.NewGroupPath("/api")
 
-	apiConfigureRoute(apiPath)
+	apiConfigureRoute(app.NewGroupPath("/api"))
 }
 
 func apiConfigureRoute(p *atreugo.Router) {
@@ -22,8 +22,9 @@ func apiConfigureRoute(p *atreugo.Router) {
 		AllowedHeaders:   []string{"Content-Type", "Accept", "Authorization", "Origin"},
 		AllowCredentials: false,
 	}))
-	p.GET("/", func(ctx *atreugo.RequestCtx) error {
-		// WIP
-		return ctx.TextResponse("API")
-	})
+	apiV1ConfigureRoute(p.NewGroupPath("/v1"))
+}
+
+func apiV1ConfigureRoute(p *atreugo.Router) {
+	p.GET("/user/{uuid}", apiV1.GetEntryUser)
 }
