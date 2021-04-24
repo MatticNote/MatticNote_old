@@ -1,0 +1,23 @@
+[database]
+address = "localhost"
+port = 5432
+user = "matticnote"
+password = "password"
+name = "matticnote"
+sslmode = "disable"
+maxconnect = 16
+
+[server]
+address = "127.0.0.1"
+port = 3000
+
+[meta]
+instance_name = "MatticNote"
+maintainer_name = "MatticNote"
+maintainer_contact = ""
+repository_url = "https://github.com/MatitcNote/MatticNote"
+
+[register]
+mode = "open"
+recaptcha_site = ""
+recaptcha_secret = ""

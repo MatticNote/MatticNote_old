@@ -22,9 +22,5 @@ func apiConfigureRoute(p *atreugo.Router) {
 		AllowedHeaders:   []string{"Content-Type", "Accept", "Authorization", "Origin"},
 		AllowCredentials: false,
 	}))
-	apiV1ConfigureRoute(p.NewGroupPath("/v1"))
-}
-
-func apiV1ConfigureRoute(p *atreugo.Router) {
-	p.GET("/user/{uuid}", apiV1.GetEntryUser)
+	apiV1.ConfigureRouteV1(p.NewGroupPath("/v1"))
 }

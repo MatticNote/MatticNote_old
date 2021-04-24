@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/MatticNote/MatticNote/db"
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v4"
 	"github.com/savsgio/atreugo/v11"
 )
 
@@ -17,9 +18,10 @@ func GetEntryUser(ctx *atreugo.RequestCtx) error {
 	}
 
 	var data MNAPIV1User
+	var isActive bool
 	query := db.DB.QueryRow(
 		context.Background(),
-		"SELECT uuid, username, display_name, summary, created_at, updated_at, is_bot FROM \"user\" WHERE uuid = $1",
+		"SELECT uuid, username, display_name, summary, created_at, updated_at, is_bot, is_active FROM \"user\" WHERE uuid = $1",
 		parse.String(),
 	)
 	err = query.Scan(
@@ -30,14 +32,19 @@ func GetEntryUser(ctx *atreugo.RequestCtx) error {
 		&data.CreatedAt,
 		&data.UpdatedAt,
 		&data.IsBot,
+		&isActive,
 	)
 	if err != nil {
-		if err.Error() == "no rows in result set" {
+		if err == pgx.ErrNoRows {
 			ctx.SetStatusCode(404)
 			return nil
 		} else {
 			return err
 		}
+	}
+	if !isActive {
+		ctx.SetStatusCode(410)
+		return nil
 	}
 
 	return ctx.JSONResponse(data, 200)

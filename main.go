@@ -60,6 +60,13 @@ var mnAppCli = &cli.App{
 			Aliases: []string{"i"},
 			Usage:   "Create configuration file",
 			Action:  initConfig,
+			Flags: []cli.Flag{
+				&cli.BoolFlag{
+					Name:    "overwrite",
+					Usage:   "Allow overwriting even if the file exists",
+					Aliases: []string{"O"},
+				},
+			},
 		},
 		{
 			Name:    "migrate",
@@ -84,7 +91,7 @@ func startServer(c *cli.Context) error {
 	if !c.Bool("skip-migration") {
 		log.Print("Migrating database")
 		if err := processMigration(cfg); err != nil {
-			if err.Error() != "no change" { // Ignore errors due to no change
+			if err != migrate.ErrNoChange { // Ignore errors due to no change
 				return err
 			}
 		}
@@ -120,8 +127,11 @@ func startServer(c *cli.Context) error {
 	return mnServer.ListenAndServe()
 }
 
-func initConfig(_ *cli.Context) error {
-	// WIP
+func initConfig(c *cli.Context) error {
+	if err := config.CreateDefaultConfiguration(c.Bool("overwrite")); err != nil {
+		return err
+	}
+	log.Println("Default configuration file was created. Please edit them.")
 	return nil
 }
 
