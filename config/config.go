@@ -28,8 +28,11 @@ type (
 	}
 
 	MNCSrv struct {
-		Address string
-		Port    uint
+		Address    string
+		Port       uint
+		Endpoint   []string
+		CsrfSecret string `toml:"csrf_secret"`
+		CsrfSecure bool   `toml:"csrf_secure"`
 	}
 
 	MNCMeta struct {
@@ -39,10 +42,17 @@ type (
 		RepositoryUrl     string `toml:"repository_url"`
 	}
 
+	MNCRegister struct {
+		Mode            string
+		RecaptchaSite   string `toml:"recaptcha_site"`
+		RecaptchaSecret string `toml:"recaptcha_secret"`
+	}
+
 	MatticNoteConfig struct {
 		Database MNCDb
 		Server   MNCSrv
 		Meta     MNCMeta
+		Register MNCRegister
 	}
 )
 
@@ -79,6 +89,12 @@ func ValidateConfiguration(cfg *MatticNoteConfig) error {
 	if cfg.Server.Address == "" {
 		return errors.New("validation error: server address must not be empty")
 	}
+	if len(cfg.Server.Endpoint) == 0 {
+		return errors.New("validation error: server endpoint must not be empty")
+	}
+	if cfg.Server.CsrfSecret == "" {
+		return errors.New("validation error: csrf secret must not be empty")
+	}
 	if cfg.Meta.InstanceName == "" {
 		return errors.New("validation error: instance name must not be empty")
 	}
@@ -87,6 +103,13 @@ func ValidateConfiguration(cfg *MatticNoteConfig) error {
 	}
 	if cfg.Meta.RepositoryUrl == "" {
 		return errors.New("validation error: repository url must not be empty")
+	}
+	switch cfg.Register.Mode {
+	case "open", "close":
+	case "":
+		return errors.New("validation error: register mode must not be empty")
+	default:
+		return errors.New("validation error: not valid register mode value")
 	}
 	return nil
 }

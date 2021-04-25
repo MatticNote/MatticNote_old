@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup | MatticNote</title>
+</head>
+<body>
+    <form method="post">
+        <label>
+            Email
+            <input type="email" name="email" placeholder="email" title="送信時にこのメールアドレスに認証コードが届きます。" required>
+        </label>
+        <label>
+            Username
+            <input type="text" name="username" placeholder="username" title="半角英数字とアンダーバーが使用できます。32文字までです。" pattern="[a-zA-Z0-9_]{,32}" required>
+        </label>
+        <label>
+            Password
+            <input type="password" name="password" placeholder="password" pattern=".{8,}" title="パスワードは8文字以上にしてください" required>
+        </label>
+        {{ ._CSRF }}
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>

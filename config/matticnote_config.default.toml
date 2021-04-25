@@ -1,23 +1,55 @@
+# MatticNote Configuration file
+
+# Database settings
+# Compatiable only for PostgreSQL server.
 [database]
 address = "localhost"
 port = 5432
 user = "matticnote"
 password = "password"
 name = "matticnote"
+# Select based on Golang's SSL mode: disable, require, verify-ca, or verify-full
+# Detail: https://pkg.go.dev/github.com/lib/pq#hdr-Connection_String_Parameters
 sslmode = "disable"
+# Specify the maximum number of connections.
+# The recommended value is 4 times the CPU core of the production server.
 maxconnect = 16
 
+# Server configuration
 [server]
+# Specify the receiving address to run the server.
+# This usually uses a private IP address
 address = "127.0.0.1"
 port = 3000
+# Use CSRF in forms when signing up or changing important account items. Substitute a random string for that here.
+# *** BE SURE TO CHANGE IT ***
+csrf_secret = "REPLACE_THIS_VALUE"
+# This item should normally be set to true.
+# Set to false if you only need to run it locally.
+csrf_secure = false
 
+# Meta configuration
 [meta]
+# Specify the instance name of the server
 instance_name = "MatticNote"
+# Enter the administrator name of the instance
 maintainer_name = "MatticNote"
+# Enter the contact information of the administrator. URL format.
+# Use "mailto:" if you want to use email as a contact.
 maintainer_contact = ""
+# Enter the repository URL of the instance.
+# Normally, you do not need to change it, but if you change the source code of MatticNote,
+# you need to publish the repository based on the license, so please enter the URL of that repository in this item.
 repository_url = "https://github.com/MatitcNote/MatticNote"
 
+
+# Register configuration
 [register]
+# Valid values are:
+# "open": Allow instance registration
+# "close": Do not allow instance registration
 mode = "open"
+# Enter the reCAPTCHA site key and secret key.
+# If both are assigned, reCAPTCHA will be valid.
 recaptcha_site = ""
 recaptcha_secret = ""
