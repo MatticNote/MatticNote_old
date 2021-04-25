@@ -4,7 +4,6 @@ import (
 	"github.com/MatticNote/MatticNote/config"
 	apiV1 "github.com/MatticNote/MatticNote/server/api/v1"
 	"github.com/MatticNote/MatticNote/server/view"
-	_ "github.com/MatticNote/MatticNote/server/view"
 	"github.com/atreugo/cors"
 	"github.com/gorilla/csrf"
 	"github.com/savsgio/atreugo/v11"
@@ -21,8 +20,8 @@ func ConfigureRoute(app *atreugo.Atreugo) {
 	apiConfigureRoute(app.NewGroupPath("/api"))
 }
 
-func internalConfigureRoute(internalPath *atreugo.Router) {
-	internalPath.UseAfter(cors.New(cors.Config{
+func internalConfigureRoute(r *atreugo.Router) {
+	r.UseAfter(cors.New(cors.Config{
 		AllowedOrigins:   config.Config.Server.Endpoint,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS", "HEAD"},
 		AllowedHeaders:   []string{"Content-Type", "Accept", "Authorization", "Origin"},
@@ -34,8 +33,8 @@ func internalConfigureRoute(internalPath *atreugo.Router) {
 		csrf.ErrorHandler(http.HandlerFunc(view.CSRFTokenErrorView)),
 	)
 
-	internalPath.NetHTTPPath("GET", "/signup", csrfProtect(http.HandlerFunc(view.InternalSignup)))
-	internalPath.NetHTTPPath("POST", "/signup", csrfProtect(http.HandlerFunc(view.InternalSignupPost)))
+	r.NetHTTPPath("GET", "/signup", csrfProtect(http.HandlerFunc(view.InternalSignup)))
+	r.NetHTTPPath("POST", "/signup", csrfProtect(http.HandlerFunc(view.InternalSignupPost)))
 }
 
 func apiConfigureRoute(r *atreugo.Router) {
