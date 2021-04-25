@@ -22,7 +22,7 @@ func GetEntryUser(ctx *atreugo.RequestCtx) error {
 	var isSuspend bool
 	query := db.DB.QueryRow(
 		context.Background(),
-		"SELECT uuid, username, display_name, summary, created_at, updated_at, is_bot, is_active, is_suspend FROM \"user\" WHERE uuid = $1",
+		"SELECT uuid, username, display_name, summary, created_at, updated_at, accept_manually, is_bot, is_active, is_suspend FROM \"user\" WHERE uuid = $1",
 		parse.String(),
 	)
 	err = query.Scan(
@@ -32,6 +32,7 @@ func GetEntryUser(ctx *atreugo.RequestCtx) error {
 		&data.Summary,
 		&data.CreatedAt,
 		&data.UpdatedAt,
+		&data.AcceptManually,
 		&data.IsBot,
 		&isActive,
 		&isSuspend,

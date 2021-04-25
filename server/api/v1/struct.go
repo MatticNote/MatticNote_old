@@ -13,14 +13,15 @@ type (
 		sql.NullTime
 	}
 	MNAPIV1User struct {
-		Uuid        string     `json:"uuid"`
-		Username    string     `json:"username"`
-		Host        NullString `json:"host"`
-		DisplayName NullString `json:"display_name"`
-		Summary     NullString `json:"summary"`
-		CreatedAt   NullTime   `json:"created_at"`
-		UpdatedAt   NullTime   `json:"updated_at"`
-		IsBot       bool       `json:"is_bot"`
+		Uuid           string     `json:"uuid"`
+		Username       string     `json:"username"`
+		Host           NullString `json:"host"`
+		DisplayName    NullString `json:"display_name"`
+		Summary        NullString `json:"summary"`
+		IsBot          bool       `json:"is_bot"`
+		AcceptManually bool       `json:"accept_manually"`
+		CreatedAt      NullTime   `json:"created_at"`
+		UpdatedAt      NullTime   `json:"updated_at"`
 	}
 )
 
