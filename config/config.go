@@ -13,7 +13,6 @@ const FileName string = "matticnote_config.toml"
 //go:embed matticnote_config.default.toml
 var defaultConfig []byte
 
-//goland:noinspection GoUnusedGlobalVariable
 var Config *MatticNoteConfig
 
 type (

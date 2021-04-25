@@ -21,12 +21,6 @@ func ConfigureRoute(app *atreugo.Atreugo) {
 }
 
 func internalConfigureRoute(r *atreugo.Router) {
-	r.UseAfter(cors.New(cors.Config{
-		AllowedOrigins:   config.Config.Server.Endpoint,
-		AllowedMethods:   []string{"GET", "POST", "PUT", "OPTIONS", "HEAD"},
-		AllowedHeaders:   []string{"Content-Type", "Accept", "Authorization", "Origin"},
-		AllowCredentials: true,
-	}))
 	csrfProtect := csrf.Protect(
 		[]byte(config.Config.Server.CsrfSecret),
 		csrf.Secure(config.Config.Server.CsrfSecure),

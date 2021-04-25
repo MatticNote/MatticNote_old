@@ -1,9 +1,9 @@
 package view
 
 import (
-	"fmt"
-	"github.com/gorilla/csrf"
+	"github.com/MatticNote/MatticNote/mnEmbed"
 	"github.com/savsgio/atreugo/v11"
+	"html/template"
 	"log"
 	"net/http"
 )
@@ -28,7 +28,8 @@ func PanicView(ctx *atreugo.RequestCtx, errTrace interface{}) {
 	_ = ctx.TextResponse("FATAL INTERNAL SERVER ERROR", 500)
 }
 
-func CSRFTokenErrorView(w http.ResponseWriter, r *http.Request) {
+func CSRFTokenErrorView(w http.ResponseWriter, _ *http.Request) {
 	w.WriteHeader(http.StatusForbidden)
-	_, _ = w.Write([]byte(fmt.Sprintf("CSRF error: %v", csrf.FailureReason(r))))
+	tmpl := template.Must(template.ParseFS(mnEmbed.Templates, "template/csrf_error.html"))
+	_ = tmpl.Execute(w, nil)
 }

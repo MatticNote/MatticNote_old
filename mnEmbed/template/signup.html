@@ -5,6 +5,9 @@
     <title>Signup | MatticNote</title>
 </head>
 <body>
+    {{ if .error }}
+    <p><b>{{ .error }}</b></p>
+    {{ end }}
     <form method="post">
         <label>
             Email

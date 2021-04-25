@@ -19,9 +19,10 @@ func GetEntryUser(ctx *atreugo.RequestCtx) error {
 
 	var data MNAPIV1User
 	var isActive bool
+	var isSuspend bool
 	query := db.DB.QueryRow(
 		context.Background(),
-		"SELECT uuid, username, display_name, summary, created_at, updated_at, is_bot, is_active FROM \"user\" WHERE uuid = $1",
+		"SELECT uuid, username, display_name, summary, created_at, updated_at, is_bot, is_active, is_suspend FROM \"user\" WHERE uuid = $1",
 		parse.String(),
 	)
 	err = query.Scan(
@@ -33,6 +34,7 @@ func GetEntryUser(ctx *atreugo.RequestCtx) error {
 		&data.UpdatedAt,
 		&data.IsBot,
 		&isActive,
+		&isSuspend,
 	)
 	if err != nil {
 		if err == pgx.ErrNoRows {
@@ -44,6 +46,10 @@ func GetEntryUser(ctx *atreugo.RequestCtx) error {
 	}
 	if !isActive {
 		ctx.SetStatusCode(410)
+		return nil
+	}
+	if isSuspend {
+		ctx.SetStatusCode(403)
 		return nil
 	}
 
