@@ -22,7 +22,7 @@ var (
 	ErrAccountAlreadyExists = errors.New("account already exists")
 )
 
-func CreateUser(email, username, password string) error {
+func CreateUser(email, username, password string, skipEmailVerify bool) error {
 	var count int
 	err := db.DB.QueryRow(
 		context.Background(),
@@ -76,14 +76,19 @@ func CreateUser(email, username, password string) error {
 
 	_, err = tx.Exec(
 		context.Background(),
-		"INSERT INTO \"user\"(username, email, password, signature_key_uuid) VALUES ($1, $2, $3, $4)",
+		"INSERT INTO \"user\"(username, email, password, signature_key_uuid, is_mail_verified) VALUES ($1, $2, $3, $4, $5)",
 		username,
 		email,
 		string(hashedPassword),
 		newKeyPairUuid.String(),
+		skipEmailVerify,
 	)
 	if err != nil {
 		return nil
+	}
+
+	if !skipEmailVerify {
+		// TODO: email send system
 	}
 
 	err = tx.Commit(context.Background())

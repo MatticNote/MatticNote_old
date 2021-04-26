@@ -29,6 +29,8 @@ func internalConfigureRoute(r *atreugo.Router) {
 
 	r.NetHTTPPath("GET", "/signup", csrfProtect(http.HandlerFunc(view.InternalSignup)))
 	r.NetHTTPPath("POST", "/signup", csrfProtect(http.HandlerFunc(view.InternalSignupPost)))
+	r.NetHTTPPath("GET", "/login", csrfProtect(http.HandlerFunc(view.InternalLogin)))
+	r.NetHTTPPath("POST", "/login", csrfProtect(http.HandlerFunc(view.InternalLoginPost)))
 }
 
 func apiConfigureRoute(r *atreugo.Router) {

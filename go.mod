@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/atreugo/cors v1.0.4
+	github.com/atreugo/session v1.0.0-beta.2 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.0 // indirect
 	github.com/golang-migrate/migrate/v4 v4.14.1
 	github.com/google/uuid v1.2.0

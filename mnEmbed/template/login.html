@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <title>Login | MatticNote</title>
+  </head>
+  <body>
+    {{ if .error }}
+    <p><b>{{ .error }}</b></p>
+    {{ end }}
+    <form method="post">
+      <input type="text" name="login" title="ユーザー名かメールアドレスを入力して下さい。" placeholder="ユーザー名もしくはメールアドレス" required>
+      <input type="password" name="password" title="パスワード" placeholder="パスワード" required>
+      {{ ._CSRF }}
+      <input type="submit" value="Login">
+    </form>
+  </body>
+</html>
