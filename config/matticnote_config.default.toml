@@ -27,6 +27,9 @@ csrf_secret = "REPLACE_THIS_VALUE"
 # This item should normally be set to true.
 # Set to false if you only need to run it locally.
 csrf_secure = false
+# Specifies a 32-byte long secret key. A string created by the password generator is preferred.
+# *** BE SURE TO CHANGE IT ***
+oauth_secret = "REPLACE_THIS_VALUE"
 
 # Meta configuration
 [meta]

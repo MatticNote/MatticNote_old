@@ -27,11 +27,12 @@ type (
 	}
 
 	MNCSrv struct {
-		Address    string
-		Port       uint
-		Endpoint   []string
-		CsrfSecret string `toml:"csrf_secret"`
-		CsrfSecure bool   `toml:"csrf_secure"`
+		Address     string
+		Port        uint
+		Endpoint    []string
+		CsrfSecret  string `toml:"csrf_secret"`
+		CsrfSecure  bool   `toml:"csrf_secure"`
+		OauthSecret string `toml:"oauth_secret"`
 	}
 
 	MNCMeta struct {
