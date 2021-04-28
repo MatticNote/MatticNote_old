@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/MatticNote/MatticNote/config"
 	apiV1 "github.com/MatticNote/MatticNote/server/api/v1"
+	"github.com/MatticNote/MatticNote/server/oauth"
 	"github.com/MatticNote/MatticNote/server/view"
 	"github.com/atreugo/cors"
 	"github.com/gorilla/csrf"
@@ -31,6 +32,10 @@ func internalConfigureRoute(r *atreugo.Router) {
 	r.NetHTTPPath("POST", "/signup", csrfProtect(http.HandlerFunc(view.InternalSignupPost)))
 	r.NetHTTPPath("GET", "/login", csrfProtect(http.HandlerFunc(view.InternalLogin)))
 	r.NetHTTPPath("POST", "/login", csrfProtect(http.HandlerFunc(view.InternalLoginPost)))
+
+	r.NetHTTPPath("GET", "/oauth/auth", http.HandlerFunc(oauth.AuthEndpoint))
+	r.NetHTTPPath("POST", "/oauth/auth", http.HandlerFunc(oauth.AuthEndpoint))
+
 }
 
 func apiConfigureRoute(r *atreugo.Router) {

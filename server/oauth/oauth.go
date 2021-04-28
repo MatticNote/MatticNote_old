@@ -6,6 +6,7 @@ import (
 	"github.com/MatticNote/MatticNote/config"
 	"github.com/ory/fosite/compose"
 	"github.com/ory/fosite/storage"
+	"net/http"
 	"time"
 )
 
@@ -33,3 +34,11 @@ var (
 	}()
 	MNOAuthProvider = compose.ComposeAllEnabled(oauthConfig, oauthStorage, oauthSecret, oauthPrivateKey)
 )
+
+func AuthEndpoint(w http.ResponseWriter, r *http.Request) {
+	authReq, err := MNOAuthProvider.NewAuthorizeRequest(r.Context(), r)
+	if err != nil {
+		MNOAuthProvider.WriteAuthorizeError(w, authReq, err)
+		return
+	}
+}
