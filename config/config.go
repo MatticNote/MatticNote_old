@@ -29,7 +29,7 @@ type (
 	MNCSrv struct {
 		Address     string
 		Port        uint
-		Endpoint    []string
+		Endpoint    string
 		CsrfSecret  string `toml:"csrf_secret"`
 		CsrfSecure  bool   `toml:"csrf_secure"`
 		OauthSecret string `toml:"oauth_secret"`
@@ -89,7 +89,7 @@ func ValidateConfiguration(cfg *MatticNoteConfig) error {
 	if cfg.Server.Address == "" {
 		return errors.New("validation error: server address must not be empty")
 	}
-	if len(cfg.Server.Endpoint) == 0 {
+	if cfg.Server.Endpoint == "" {
 		return errors.New("validation error: server endpoint must not be empty")
 	}
 	if cfg.Server.CsrfSecret == "" {

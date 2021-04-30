@@ -21,6 +21,8 @@ maxconnect = 16
 # This usually uses a private IP address
 address = "127.0.0.1"
 port = 3000
+# Specifies the URL for the end user to access
+endpoint = "http://example.com"
 # Use CSRF in forms when signing up or changing important account items. Substitute a random string for that here.
 # *** BE SURE TO CHANGE IT ***
 csrf_secret = "REPLACE_THIS_VALUE"
